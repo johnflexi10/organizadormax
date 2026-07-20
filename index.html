@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="midnight">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OrganizaMax 3D - Sistema de Organização Pessoal</title>
+  <meta name="description" content="Sistema completo, intuitivo e 3D para gestão financeira, desejos x orçamento, rastreio de procrastinação, metas diárias, compromissos e espaço de trabalho.">
+  
+  <!-- PWA & Mobile Web App Meta Tags -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#6366f1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="OrganizaMax">
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Sidebar Navegação (Desktop) -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo-3d">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>OrganizaMax</h1>
+          <span class="badge-3d">Painel 3D</span>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <button class="nav-item active" data-tab="financeiro">
+          <span class="nav-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          </span>
+          <span class="nav-label">1. Financeiro</span>
+        </button>
+
+        <button class="nav-item" data-tab="orcamento">
+          <span class="nav-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          </span>
+          <span class="nav-label">2. Desejos vs Orçamento</span>
+        </button>
+
+        <button class="nav-item" data-tab="procrastinar">
+          <span class="nav-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          </span>
+          <span class="nav-label">3. Procrastinar</span>
+        </button>
+
+        <button class="nav-item" data-tab="metas">
+          <span class="nav-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+          </span>
+          <span class="nav-label">4. Metas do Dia</span>
+        </button>
+
+        <button class="nav-item" data-tab="agenda">
+          <span class="nav-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          </span>
+          <span class="nav-label">5. Agendamento</span>
+        </button>
+
+        <button class="nav-item" data-tab="trabalho">
+          <span class="nav-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          </span>
+          <span class="nav-label">6. Trabalho</span>
+        </button>
+      </nav>
+
+      <!-- Sidebar Controls: Temas, Backup e Relatórios -->
+      <div class="sidebar-controls" style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+        <select id="theme-selector" onchange="changeAppTheme(this.value)" class="theme-select-3d">
+          <option value="midnight">🌙 Midnight Dark</option>
+          <option value="cyberpunk">⚡ Cyberpunk Neon</option>
+          <option value="emerald">🌿 Emerald Nature</option>
+          <option value="cosmos">🌌 Deep Cosmos</option>
+        </select>
+
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn-secondary-3d" style="flex: 1; padding: 6px; font-size: 0.78rem;" onclick="openModal('modal-relatorio')">
+            📊 Relatório
+          </button>
+          <button class="btn-secondary-3d" style="flex: 1; padding: 6px; font-size: 0.78rem;" onclick="openModal('modal-backup')">
+            💾 Backup
+          </button>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-pill-3d">
+          <div class="avatar-3d">OP</div>
+          <div class="user-info">
+            <span class="user-name">Seu Espaço</span>
+            <span class="user-status">100% Privado &amp; Local</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+      
+      <!-- Top Header Mobile / Compact -->
+      <header class="top-header">
+        <div class="mobile-brand">
+          <div class="brand-logo-3d small">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+          </div>
+          <h2>OrganizaMax</h2>
+        </div>
+
+        <div class="header-right-actions">
+          <button class="btn-alert-bell" onclick="openModal('modal-alertas')" title="Central de Alertas e Lembretes do Dia">
+            🔔 <span class="bell-badge" id="bell-alert-count">0</span>
+          </button>
+          <div class="header-date" id="current-date-display">--/--/----</div>
+        </div>
+      </header>
+
+      <!-- Banner de Alerta Inteligente do Dia -->
+      <div class="smart-alert-banner" id="smart-alert-banner" onclick="openModal('modal-alertas')">
+        <div class="alert-banner-left">
+          <span class="alert-icon">🔔</span>
+          <span id="smart-alert-text">Buscando lembretes do seu dia...</span>
+        </div>
+        <span class="alert-btn-label">Ver Alertas &rarr;</span>
+      </div>
+
+      <!-- TAB 1: FINANCEIRO -->
+      <section id="tab-financeiro" class="tab-pane active">
+        <div class="page-title-card card-3d">
+          <div class="title-content">
+            <h2>💰 Controle Financeiro &amp; Contas a Pagar</h2>
+            <p>Monitore o que você tem em <strong>verde (entradas)</strong> e gerencie suas <strong>contas a pagar</strong> sem complicações.</p>
+          </div>
+          <div class="title-actions">
+            <button class="btn-success-3d" onclick="openModal('modal-saldo-inicial')">
+              ✏️ Mudar Meu Dinheiro
+            </button>
+            <button class="btn-primary-3d" onclick="openModal('modal-transacao')">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Nova Entrada/Saída
+            </button>
+            <button class="btn-warning-3d" onclick="openModal('modal-conta-pagar')">
+              📌 Nova Conta a Pagar
+            </button>
+          </div>
+        </div>
+
+        <!-- Metric Cards -->
+        <div class="metrics-grid">
+          <div class="metric-card-3d income-green">
+            <div class="metric-icon">💵</div>
+            <div class="metric-info">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
+                <span class="metric-label">O que tenho (Em Verde)</span>
+                <button class="btn-edit-small" onclick="openModal('modal-saldo-inicial')" title="Alterar quanto dinheiro você tem">✏️ Mudar</button>
+              </div>
+              <h3 class="metric-value green-text" id="total-income">R$ 0,00</h3>
+            </div>
+          </div>
+
+          <div class="metric-card-3d bills-due">
+            <div class="metric-icon">📑</div>
+            <div class="metric-info">
+              <span class="metric-label">Contas a Pagar (Pendentes)</span>
+              <h3 class="metric-value warning-text" id="total-bills-pending">R$ 0,00</h3>
+            </div>
+          </div>
+
+          <div class="metric-card-3d balance" id="balance-card">
+            <div class="metric-icon">💳</div>
+            <div class="metric-info">
+              <span class="metric-label">Saldo Livre Disponível</span>
+              <h3 class="metric-value" id="net-balance">R$ 0,00</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub-abas dentro de Financeiro -->
+        <div class="fin-subtabs-container">
+          <div class="fin-subtabs">
+            <button class="fin-subtab-btn active" data-subtab="transacoes" onclick="switchFinSubtab('transacoes')">
+              📊 Extrato de Transações
+            </button>
+            <button class="fin-subtab-btn" data-subtab="contas" onclick="switchFinSubtab('contas')">
+              📑 Aba: Contas a Pagar (<span id="bills-badge-count">0</span>)
+            </button>
+          </div>
+        </div>
+
+        <!-- Sub-painel 1: Extrato de Transações -->
+        <div id="fin-subpane-transacoes" class="fin-subpane active">
+          <div class="content-card-3d">
+            <div class="card-header">
+              <h3>Histórico de Entradas &amp; Saídas</h3>
+              <div class="filter-group">
+                <select id="finance-filter" onchange="renderFinance()">
+                  <option value="all">Todas</option>
+                  <option value="receita">Entradas (Em Verde)</option>
+                  <option value="despesa">Saídas / Gastos</option>
+                </select>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <div class="transaction-list" id="transaction-list">
+                <!-- Renderizado dinamicamente -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub-painel 2: Aba Contas a Pagar -->
+        <div id="fin-subpane-contas" class="fin-subpane">
+          <div class="content-card-3d">
+            <div class="card-header">
+              <h3>Aba de Contas a Pagar &amp; Vencimentos</h3>
+              <div class="filter-group">
+                <select id="bills-filter" onchange="renderBills()">
+                  <option value="all">Todas as Contas</option>
+                  <option value="pendente" selected>Apenas Pendentes 🔴</option>
+                  <option value="pago">Já Pagas 🟢</option>
+                </select>
+              </div>
+            </div>
+            <div class="bills-list" id="bills-list">
+              <!-- Renderizado dinamicamente -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: O QUE EU QUERO VS ORÇAMENTO -->
+      <section id="tab-orcamento" class="tab-pane">
+        <div class="page-title-card card-3d">
+          <div class="title-content">
+            <h2>🎁 O Que Eu Quero (Controle de Necessidade &amp; Orçamento)</h2>
+            <p>Conectado ao seu <strong>Saldo Livre da Página 1</strong> para decidir se você pode comprar agora ou se deve esperar.</p>
+          </div>
+          <button class="btn-primary-3d" onclick="openModal('modal-desejo')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Adicionar Desejo / Item
+          </button>
+        </div>
+
+        <!-- Banner de Integração com o Financeiro da Pág 1 -->
+        <div class="budget-summary-card-3d">
+          <div class="budget-summary-item">
+            <span class="budget-lbl">💳 Dinheiro Livre Atual (Pág 1)</span>
+            <h3 class="budget-val green-text" id="wishlist-current-balance">R$ 0,00</h3>
+          </div>
+          <div class="budget-summary-item">
+            <span class="budget-lbl">🛒 Total dos Itens Planejados</span>
+            <h3 class="budget-val" id="wishlist-total-cost">R$ 0,00</h3>
+          </div>
+          <div class="budget-summary-item">
+            <span class="budget-lbl">💡 Diagnóstico Inteligente</span>
+            <span class="budget-diag" id="wishlist-diagnosis">Analisando seu orçamento...</span>
+          </div>
+        </div>
+
+        <!-- Filtros de Necessidade -->
+        <div class="content-card-3d" style="margin-bottom: 1.5rem; padding: 1rem 1.5rem;">
+          <div class="card-header" style="margin-bottom: 0;">
+            <h4 style="font-size: 0.95rem;">Filtrar por Nível de Necessidade</h4>
+            <div class="filter-group">
+              <select id="wishlist-filter-necessity" onchange="renderWishlist()">
+                <option value="all">Todos os Níveis</option>
+                <option value="Essencial">🚨 Essencial (Necessidade Real)</option>
+                <option value="Útil">⚡ Útil (Importante)</option>
+                <option value="Supérfluo">☕ Supérfluo (Desejo)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="wishlist-grid" id="wishlist-grid">
+          <!-- Renderizado dinamicamente -->
+        </div>
+      </section>
+
+      <!-- TAB 3: PROCRASTINAR (DETECTOR DE PRODUTIVIDADE) -->
+      <section id="tab-procrastinar" class="tab-pane">
+        <div class="page-title-card card-3d">
+          <div class="title-content">
+            <h2>⏳ Procrastinômetro &amp; Atividades</h2>
+            <p>Acompanhe suas tarefas e saiba em tempo real se você está produzindo ou procrastinando!</p>
+          </div>
+          <button class="btn-primary-3d" onclick="openModal('modal-atividade')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Nova Atividade
+          </button>
+        </div>
+
+        <!-- Procrastination Gauge 3D Card -->
+        <div class="procrastination-card-3d" id="procrastinometer-box">
+          <div class="gauge-header">
+            <div class="gauge-badge" id="procrastination-badge">Nível de Foco</div>
+            <h3 id="procrastination-status-title">Carregando status...</h3>
+          </div>
+          <div class="gauge-body">
+            <div class="meter-3d-wrapper">
+              <div class="meter-3d-bar" id="meter-bar" style="width: 0%;"></div>
+            </div>
+            <div class="gauge-stats">
+              <div class="stat-item">
+                <span class="stat-num" id="stat-pending">0</span>
+                <span class="stat-lbl">Pendentes</span>
+              </div>
+              <div class="stat-item danger">
+                <span class="stat-num" id="stat-overdue">0</span>
+                <span class="stat-lbl">Atrasadas</span>
+              </div>
+              <div class="stat-item success">
+                <span class="stat-num" id="stat-completed">0</span>
+                <span class="stat-lbl">Concluídas</span>
+              </div>
+            </div>
+          </div>
+          <p class="procrastination-tip" id="procrastination-tip">Cadastre suas atividades e prazos para monitorar o seu progresso.</p>
+        </div>
+
+        <!-- Activities List -->
+        <div class="content-card-3d">
+          <div class="card-header">
+            <h3>Suas Atividades</h3>
+            <div class="filter-group">
+              <select id="activity-filter" onchange="renderActivities()">
+                <option value="all">Todas</option>
+                <option value="pendente">Pendentes</option>
+                <option value="atrasada">Atrasadas</option>
+                <option value="concluida">Concluídas</option>
+              </select>
+            </div>
+          </div>
+          <div class="activity-list" id="activity-list">
+            <!-- Renderizado dinamicamente -->
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: METAS DO DIA (CLICK LIST) -->
+      <section id="tab-metas" class="tab-pane">
+        <div class="page-title-card card-3d">
+          <div class="title-content">
+            <h2>🎯 Metas do Dia (Click List)</h2>
+            <p>Marque com 1 clique suas metas diárias. Simples, prático e motivador!</p>
+          </div>
+          <button class="btn-primary-3d" onclick="openModal('modal-meta')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Criar Nova Meta
+          </button>
+        </div>
+
+        <!-- Daily Progress Bar 3D Card -->
+        <div class="progress-card-3d">
+          <div class="progress-info-row">
+            <div>
+              <h3>Progresso de Hoje</h3>
+              <span class="progress-subtext" id="daily-goals-count">0 de 0 concluídas</span>
+            </div>
+            <div class="streak-badge-3d">
+              🔥 <span id="streak-count">0</span> dias seguidos
+            </div>
+          </div>
+          <div class="progress-bar-container-3d">
+            <div class="progress-bar-fill-3d" id="daily-progress-fill" style="width: 0%;">
+              <span class="progress-bar-text" id="daily-progress-text">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Goals Checklist List -->
+        <div class="goals-click-list" id="goals-click-list">
+          <!-- Renderizado dinamicamente -->
+        </div>
+      </section>
+
+      <!-- TAB 5: AGENDAMENTO DE COMPROMISSOS -->
+      <section id="tab-agenda" class="tab-pane">
+        <div class="page-title-card card-3d">
+          <div class="title-content">
+            <h2>📅 Agenda &amp; Compromissos</h2>
+            <p>Organize suas reuniões, eventos e compromissos com horário exato e alerta visual.</p>
+          </div>
+          <button class="btn-primary-3d" onclick="openModal('modal-compromisso')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Novo Compromisso
+          </button>
+        </div>
+
+        <div class="agenda-layout">
+          <div class="agenda-header-filter">
+            <button class="agenda-tab-btn active" data-filter="upcoming" onclick="setAgendaFilter('upcoming')">Próximos</button>
+            <button class="agenda-tab-btn" data-filter="today" onclick="setAgendaFilter('today')">Hoje</button>
+            <button class="agenda-tab-btn" data-filter="all" onclick="setAgendaFilter('all')">Todos</button>
+          </div>
+
+          <div class="agenda-list" id="agenda-list">
+            <!-- Renderizado dinamicamente -->
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: TRABALHO -->
+      <section id="tab-trabalho" class="tab-pane">
+        <div class="page-title-card card-3d">
+          <div class="title-content">
+            <h2>💼 6. Trabalho</h2>
+            <p>Monte seus esquemas de trabalho, edições e projetos em blocos 3D e controle o <strong>tempo de execução</strong> para maximizar seu desempenho!</p>
+          </div>
+          <button class="btn-primary-3d" onclick="openModal('modal-lego-peca')">
+            🧩 Nova Peça de Trabalho
+          </button>
+        </div>
+
+        <!-- Banner de Desempenho e Tempo de Execução -->
+        <div class="budget-summary-card-3d" style="margin-bottom: 1.5rem;">
+          <div class="budget-summary-item">
+            <span class="budget-lbl">⏱️ Trabalho Ativo Agora</span>
+            <h3 class="budget-val green-text" id="work-active-task-name">Nenhum no momento</h3>
+          </div>
+          <div class="budget-summary-item">
+            <span class="budget-lbl">⏳ Tempo Rodando no Trabalho Ativo</span>
+            <h3 class="budget-val" id="work-active-timer-display" style="font-family: monospace; color: var(--accent-cyan);">00:00:00</h3>
+          </div>
+          <div class="budget-summary-item">
+            <span class="budget-lbl">📊 Desempenho de Hoje</span>
+            <span class="budget-diag" id="work-performance-summary">0 trabalhos concluídos</span>
+          </div>
+        </div>
+
+        <!-- Lego Board Workspace -->
+        <div class="lego-board-container" id="lego-board">
+          <!-- Colunas de encaixe renderizadas dinamicamente -->
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation Bar (Mobile / Tablet Touch) -->
+    <nav class="bottom-nav">
+      <button class="bottom-nav-item active" data-tab="financeiro">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        <span>Finanças</span>
+      </button>
+      <button class="bottom-nav-item" data-tab="orcamento">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+        <span>Desejos</span>
+      </button>
+      <button class="bottom-nav-item" data-tab="procrastinar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <span>Foco</span>
+      </button>
+      <button class="bottom-nav-item" data-tab="metas">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+        <span>Metas</span>
+      </button>
+      <button class="bottom-nav-item" data-tab="agenda">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        <span>Agenda</span>
+      </button>
+      <button class="bottom-nav-item" data-tab="trabalho">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        <span>Trabalho</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- MODAIS & POPUPS 3D -->
+
+  <!-- Modal 1: Central de Alertas Inteligente -->
+  <div class="modal-backdrop" id="modal-alertas">
+    <div class="modal-card-3d">
+      <div class="modal-header">
+        <h3>🔔 Central de Alertas &amp; Lembretes do Dia</h3>
+        <button class="close-modal" onclick="closeModal('modal-alertas')">&times;</button>
+      </div>
+      <div class="alerts-modal-content" id="alerts-modal-list">
+        <!-- Renderizado dinamicamente -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-primary-3d" onclick="closeModal('modal-alertas')">Entendido 👍</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Backup & Exportação / Importação de Dados JSON -->
+  <div class="modal-backdrop" id="modal-backup">
+    <div class="modal-card-3d">
+      <div class="modal-header">
+        <h3>💾 Backup &amp; Segurança dos Dados</h3>
+        <button class="close-modal" onclick="closeModal('modal-backup')">&times;</button>
+      </div>
+      
+      <p style="font-size: 0.88rem; color: var(--color-text-muted); margin-bottom: 1.5rem;">
+        Seus dados são 100% privados e salvos no seu próprio navegador. Faça o backup em 1 clique para salvar em um arquivo JSON ou restaurar mais tarde.
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+        <button class="btn-primary-3d" style="justify-content: center;" onclick="exportAppDataJSON()">
+          📥 Baixar Backup dos Meus Dados (JSON)
+        </button>
+
+        <div style="border-top: var(--glass-border); padding-top: 1rem;">
+          <label style="font-size: 0.82rem; font-weight: 700; color: var(--color-text-muted); display: block; margin-bottom: 0.5rem;">
+            📤 Restaurar Backup a partir de arquivo JSON
+          </label>
+          <input type="file" id="backup-file-input" accept=".json" onchange="importAppDataJSON(event)" style="font-size: 0.85rem; color: var(--color-text-main);">
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary-3d" onclick="closeModal('modal-backup')">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Relatório Semanal de Desempenho -->
+  <div class="modal-backdrop" id="modal-relatorio">
+    <div class="modal-card-3d">
+      <div class="modal-header">
+        <h3>📊 Relatório de Desempenho &amp; Finanças</h3>
+        <button class="close-modal" onclick="closeModal('modal-relatorio')">&times;</button>
+      </div>
+      
+      <div class="weekly-report-grid" id="weekly-report-content">
+        <!-- Renderizado dinamicamente -->
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-primary-3d" onclick="closeModal('modal-relatorio')">Fechar Relatório</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Nova Peça / Nota de Trabalho Lego -->
+  <div class="modal-backdrop" id="modal-lego-peca">
+    <div class="modal-card-3d">
+      <div class="modal-header">
+        <h3>Criar Peça / Nota de Trabalho</h3>
+        <button class="close-modal" onclick="closeModal('modal-lego-peca')">&times;</button>
+      </div>
+      <form id="form-lego-peca" onsubmit="handleSaveLegoPiece(event)">
+        <div class="form-group">
+          <label for="lego-title">Título do Projeto / Edição</label>
+          <input type="text" id="lego-title" placeholder="Ex: Edição de Vídeo dia 25, Roteiro Canal, Design Card" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="lego-date">Data / Prazo</label>
+            <input type="date" id="lego-date" required>
+          </div>
+          <div class="form-group">
+            <label for="lego-target-time">Tempo Meta de Execução (minutos)</label>
+            <input type="number" id="lego-target-time" min="5" max="1440" placeholder="Ex: 45, 60, 120" value="60" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="lego-stage">Etapa / Encaixe</label>
+          <select id="lego-stage" required>
+            <option value="ideias">💡 Ideias &amp; Roteiros</option>
+            <option value="execucao" selected>🎬 Em Edição / Produção</option>
+            <option value="revisao">🔍 Revisão &amp; Ajustes</option>
+            <option value="concluido">✅ Concluído / Postado</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="lego-notes">Anotações / Instruções da Peça</label>
+          <textarea id="lego-notes" rows="3" placeholder="Ex: Cortar introdução, adicionar trilha sonora animada, exportar em 4K" style="width: 100%; background: var(--bg-input); color: var(--color-text-main); border: var(--glass-border); border-radius: var(--radius-sm); padding: 0.6rem 1rem; font-family: inherit; font-size: 0.88rem; outline: none; resize: vertical;"></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="lego-color">Cor da Peça Lego 3D</label>
+            <select id="lego-color" required>
+              <option value="indigo">🟦 Azul Índigo</option>
+              <option value="emerald">🟩 Verde Esmeralda</option>
+              <option value="amber">🟨 Amarelo Âmbar</option>
+              <option value="rose">🟥 Vermelho / Rosa</option>
+              <option value="purple">🪺 Roxo Místico</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="lego-pinned">Fixar Peça no Topo?</label>
+            <select id="lego-pinned" required>
+              <option value="false">Não (Móvel)</option>
+              <option value="true">📌 Sim (Fixar Nota)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary-3d" onclick="closeModal('modal-lego-peca')">Cancelar</button>
+          <button type="submit" class="btn-primary-3d">Encaixar Peça 🧩</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Mudar Saldo Inicial / Dinheiro Atual -->
+  <div class="modal-backdrop" id="modal-saldo-inicial">
+    <div class="modal-card-3d">
+      <div class="modal-header">
+        <h3>Definir Dinheiro em Caixa (Em Verde)</h3>
+        <button class="close-modal" onclick="closeModal('modal-saldo-inicial')">&times;</button>
+      </div>
+      <form id="form-saldo-inicial" onsubmit="handleSaveInitialBalance(event)">
+        <div class="form-group">
+          <label for="initial-balance-val">Quanto dinheiro você tem atualmente? (R$)</label>
+          <input type="number" id="initial-balance-val" step="0.01" min="0" placeholder="Ex: 5000.00" required>
+        </div>
+        <p style="font-size: 0.82rem; color: var(--color-text-muted); margin-bottom: 1rem;">
+          💡 Isso atualizará o valor total que você tem disponível no seu caixa.
+        </p>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary-3d" onclick="closeModal('modal-saldo-inicial')">Cancelar</button>
+          <button type="submit" class="btn-primary-3d">Salvar Dinheiro Atual</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Transação Financeira -->
+  <div class="modal-backdrop" id="modal-transacao">
+    <div class="modal-card-3d">
+      <div class="modal-header">
+        <h3>Nova Transação Financeira</h3>
+        <button class="close-modal" onclick="closeModal('modal-transacao')">&times;</button>
+      </div>
+      <form id="form-transacao" onsubmit="handleSaveTransaction(event)">
+        <div class="form-group">
+          <label>Tipo</label>
+          <div class="radio-group-3d">
+            <label class="radio-btn-3d">
+              <input type="radio" name="tx-type" value="receita" checked>
+              <span>📈 Entradas (Em Verde)</span>
+            </label>
+            <label class="radio-btn-3d">
+              <input type="radio" name="tx-type" value="despesa">
+              <span>📉 Saída / Gasto</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="tx-desc">Descrição / Nome</label>
+          <input type="text" id="tx-desc" placeholder="Ex: Salário, Freelance, Rendimentos" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="tx-amount">Valor (R$)</label>
+            <input type="number" id="tx-amount" step="0.01" min="0.01" placeholder="0,00" required>
+          </div>
+          <div class="form-group">
+            <label for="tx-date">Data</label>
+            <input type="date" id="tx-date" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="tx-category">Categoria</label>
+          <select id="tx-category" required>
+            <option value="Trabalho">Trabalho / Salário</option>
+            <option value="Alimentação">Alimentação / Mercado</option>
+            <option value="Moradia">Moradia / Contas</option>
+            <option value="Lazer">Lazer / Entretenimento</option>
+            <option value="Investimentos">Investimentos / Poupança</option>
+            <option value="Outros">Outros</option>
+          </select>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary-3d" onclick="closeModal('modal-transacao')">Cancelar</button>
+          <button type="submit" class="btn-primary-3d">Salvar Transação</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Conta a Pagar -->
+  <div class="modal-backdrop" id="modal-conta-pagar">
+    <div class="modal-card-3d">
+      <div class="modal-header">
+        <h3>Cadastrar Conta a Pagar</h3>
+        <button class="close-modal" onclick="closeModal('modal-conta-pagar')">&times;</button>
+      </div>
+      <form id="form-conta-pagar" onsubmit="handleSaveBill(event)">
+        <div class="form-group">
+          <label for="bill-title">Nome da Conta / Boleto</label>
+          <input type="text" id="bill-title" placeholder="Ex: Aluguel, Luz, Internet, Cartão de Crédito" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="bill-amount">Valor (R$)</label>
+            <input type="number" id="bill-amount" step="0.01" min="0.01" placeholder="0,00" required>
+          </div>
+          <div class="form-group">
+            <label for="bill-due">Data de Vencimento</label>
+            <input type="date" id="bill-due" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="bill-category">Categoria</label>
+          <select id="bill-category" required>
+            <option value="Moradia">Moradia / Contas da Casa</option>
+            <option value="Cartão">Cartão de Crédito</option>
+            <option value="Serviços">Serviços / Assinaturas</option>
+            <option value="Estudo">Estudo / Cursos</option>
+            <option value="Outros">Outros</option>
+          </select>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary-3d" onclick="closeModal('modal-conta-pagar')">Cancelar</button>
+          <button type="submit" class="btn-primary-3d">Adicionar Conta a Pagar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Desejo / Wishlist -->
+  <div class="modal-backdrop" id="modal-desejo">
+    <div class="modal-card-3d">
+      <div class="modal-header">
+        <h3>Adicionar Item / Desejo</h3>
+        <button class="close-modal" onclick="closeModal('modal-desejo')">&times;</button>
+      </div>
+      <form id="form-desejo" onsubmit="handleSaveWish(event)">
+        <div class="form-group">
+          <label for="wish-title">O que você planeja comprar?</label>
+          <input type="text" id="wish-title" placeholder="Ex: Remédio, Fone Bluetooth, Cadeira, Viagem" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="wish-price">Preço Estimado (R$)</label>
+            <input type="number" id="wish-price" step="0.01" min="0.01" placeholder="0,00" required>
+          </div>
+          <div class="form-group">
+            <label for="wish-necessity">Nível de Necessidade</label>
+            <select id="wish-necessity" required>
+              <option value="Essencial">🚨 Essencial (Preciso muito)</option>
+              <option value="Útil" selected>⚡ Útil (Importante)</option>
+              <option value="Supérfluo">☕ Supérfluo (Desejo / Lazer)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="wish-icon">Ícone / Emoji Representativo</label>
+          <input type="text" id="wish-icon" placeholder="Ex: 🎧, 💻, ✈️, 👟" maxlength="4" value="🎁">
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary-3d" onclick="closeModal('modal-desejo')">Cancelar</button>
+          <button type="submit" class="btn-primary-3d">Salvar na Lista</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Atividade (Procrastinar) -->
+  <div class="modal-backdrop" id="modal-atividade">
+    <div class="modal-card-3d">
+      <div class="modal-header">
+        <h3>Nova Atividade / Tarefa</h3>
+        <button class="close-modal" onclick="closeModal('modal-atividade')">&times;</button>
+      </div>
+      <form id="form-atividade" onsubmit="handleSaveActivity(event)">
+        <div class="form-group">
+          <label for="act-title">Título da Atividade</label>
+          <input type="text" id="act-title" placeholder="Ex: Entregar relatório de vendas" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="act-due">Data Limite (Prazo)</label>
+            <input type="date" id="act-due" required>
+          </div>
+          <div class="form-group">
+            <label for="act-effort">Esforço Estimado</label>
+            <select id="act-effort" required>
+              <option value="Rápido (15 min)">Rápido (15 min)</option>
+              <option value="Médio (1h)" selected>Médio (1h)</option>
+              <option value="Longo (+2h)">Longo (+2h)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="act-category">Categoria</label>
+          <select id="act-category" required>
+            <option value="Estudo">Estudo 📚</option>
+            <option value="Trabalho">Trabalho 💼</option>
+            <option value="Pessoal">Pessoal 🏠</option>
+            <option value="Saúde">Saúde 🏋️</option>
+          </select>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary-3d" onclick="closeModal('modal-atividade')">Cancelar</button>
+          <button type="submit" class="btn-primary-3d">Adicionar Atividade</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Meta do Dia -->
+  <div class="modal-backdrop" id="modal-meta">
+    <div class="modal-card-3d">
+      <div class="modal-header">
+        <h3>Nova Meta Diária</h3>
+        <button class="close-modal" onclick="closeModal('modal-meta')">&times;</button>
+      </div>
+      <form id="form-meta" onsubmit="handleSaveGoal(event)">
+        <div class="form-group">
+          <label for="goal-title">Descrição da Meta Diária</label>
+          <input type="text" id="goal-title" placeholder="Ex: Beber 2L de Água, Ler 20 Páginas" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="goal-icon">Emoji de Destaque</label>
+            <input type="text" id="goal-icon" placeholder="Ex: 💧, 🏃, 📖, 🧘" maxlength="4" value="💧">
+          </div>
+          <div class="form-group">
+            <label for="goal-steps">Mini-Clicks / Passos (Ex: 8 copos)</label>
+            <input type="number" id="goal-steps" min="1" max="50" placeholder="1 a 50" value="8" required>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary-3d" onclick="closeModal('modal-meta')">Cancelar</button>
+          <button type="submit" class="btn-primary-3d">Criar Meta Diária</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Compromisso -->
+  <div class="modal-backdrop" id="modal-compromisso">
+    <div class="modal-card-3d">
+      <div class="modal-header">
+        <h3>Novo Compromisso / Evento</h3>
+        <button class="close-modal" onclick="closeModal('modal-compromisso')">&times;</button>
+      </div>
+      <form id="form-compromisso" onsubmit="handleSaveAppointment(event)">
+        <div class="form-group">
+          <label for="app-title">Título do Compromisso</label>
+          <input type="text" id="app-title" placeholder="Ex: Reunião de Equipe, Consulta Médica" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="app-date">Data</label>
+            <input type="date" id="app-date" required>
+          </div>
+          <div class="form-group">
+            <label for="app-time">Horário</label>
+            <input type="time" id="app-time" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="app-location">Local / Link da Chamada</label>
+          <input type="text" id="app-location" placeholder="Ex: Google Meet, Escritório Central, Clínica X">
+        </div>
+
+        <div class="form-group">
+          <label for="app-type">Tipo de Compromisso</label>
+          <select id="app-type" required>
+            <option value="Trabalho">Trabalho 💼</option>
+            <option value="Saúde">Saúde 🩺</option>
+            <option value="Pessoal">Pessoal 👤</option>
+            <option value="Social">Social / Lazer 🎉</option>
+          </select>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary-3d" onclick="closeModal('modal-compromisso')">Cancelar</button>
+          <button type="submit" class="btn-primary-3d">Agendar Evento</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JS Modules -->
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
