@@ -313,6 +313,14 @@ function importAppDataJSON(e) {
   reader.readAsText(file);
 }
 
+function resetAppToZeroKM() {
+  if (confirm('🚗 Tem certeza de que deseja zerar todos os dados e iniciar seu sistema 100% limpo ("Carro 0km")?')) {
+    StorageManager.resetToZeroKM();
+    alert('✨ Sistema zerado com sucesso! Agora está 100% novo para você cadastrar seus dados.');
+    window.location.reload();
+  }
+}
+
 // --------------------------------------------------------------------------
 // 5. RELATÓRIO DE DESEMPENHO SEMANAL & ANÁLISE GERAL
 // --------------------------------------------------------------------------
